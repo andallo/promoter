@@ -1,0 +1,7 @@
+echo "build.."
+./sbt "project scanner" stage
+echo "done"
+
+rsync -a --delete /Projects/promoter/scanner/target/universal root@vps455191.ovh.net:/root/promoter_files/scanner_bin
+rsync -a --delete /Projects/promoter/firefox_driver root@vps455191.ovh.net:/root/promoter_files
+echo "ok"

@@ -1,0 +1,2 @@
+SBT_OPTS="-Xms128M -Xmx512M -Xss1M -XX:+CMSClassUnloadingEnabled -Dfile.encoding=UTF8"
+java $SBT_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar `dirname $0`/sbt-launch.jar "$@"
