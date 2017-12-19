@@ -1,4 +1,4 @@
-package ru.carbay.promoter.services.us_proxy;
+package ru.carbay.promoter.services.proxy;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -30,6 +30,7 @@ public class ProxyList {
                 proxy.setIpAdress(line.substring(0, line.indexOf(":")));
                 proxy.setPort(line.substring(line.indexOf(":") + 1, line.indexOf("#")));
                 proxy.setCountry(line.substring(line.indexOf("#") + 1));
+                proxy.setProvider("https://www.us-proxy.org/");
                 proxies.add(proxy);
             }
         }
@@ -45,8 +46,10 @@ public class ProxyList {
         String line = "";
         while ((line = rd.readLine()) != null) {
             Proxy proxy = new Proxy();
-            proxy.setIpAdress(line);
+            proxy.setIpAdress(line.substring(0, line.indexOf("#")));
             proxy.setPort(port);
+            proxy.setCountry(line.substring(line.indexOf("#") + 1));
+            proxy.setProvider("https://proxy-seller.ru/");
             proxies.add(proxy);
         }
 

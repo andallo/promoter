@@ -10,7 +10,7 @@ import ru.carbay.promoter.model.Proxy;
 import ru.carbay.promoter.model.SiteScan;
 import ru.carbay.promoter.scanners.AutoruScanner;
 import ru.carbay.promoter.services.pager_duty.PagerDutyAlerts;
-import ru.carbay.promoter.services.us_proxy.ProxyList;
+import ru.carbay.promoter.services.proxy.ProxyList;
 
 import java.util.*;
 

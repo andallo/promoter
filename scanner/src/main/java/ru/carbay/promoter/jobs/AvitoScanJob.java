@@ -10,40 +10,40 @@ public class AvitoScanJob implements Job{
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        tryCatchAutoruScan("Москва", "Lada");
-        tryCatchAutoruScan("Москва", "Audi");
-        tryCatchAutoruScan("Москва", "BMW");
-        tryCatchAutoruScan("Москва", "Cadillac");
-        tryCatchAutoruScan("Москва", "Chevrolet");
-        tryCatchAutoruScan("Москва", "Citroen");
-        tryCatchAutoruScan("Москва", "Fiat");
-        tryCatchAutoruScan("Москва", "Ford");
-        tryCatchAutoruScan("Москва", "Hyundai");
-        tryCatchAutoruScan("Москва", "Infiniti");
-        tryCatchAutoruScan("Москва", "Jaguar");
-        tryCatchAutoruScan("Москва", "Jeep");
-        tryCatchAutoruScan("Москва", "KIA");
-        tryCatchAutoruScan("Москва", "Land Rover");
-        tryCatchAutoruScan("Москва", "Lifan");
-        tryCatchAutoruScan("Москва", "MINI");
-        tryCatchAutoruScan("Москва", "Mazda");
-        tryCatchAutoruScan("Москва", "Mercedes-Benz");
-        tryCatchAutoruScan("Москва", "Mitsubishi");
-        tryCatchAutoruScan("Москва", "Nissan");
-        tryCatchAutoruScan("Москва", "Peugeot");
-        tryCatchAutoruScan("Москва", "Porsche");
-        tryCatchAutoruScan("Москва", "Ravon");
-        tryCatchAutoruScan("Москва", "Renault");
-        tryCatchAutoruScan("Москва", "Skoda");
-        tryCatchAutoruScan("Москва", "Subaru");
-        tryCatchAutoruScan("Москва", "Suzuki");
-        tryCatchAutoruScan("Москва", "Toyota");
-        tryCatchAutoruScan("Москва", "Volkswagen");
-        tryCatchAutoruScan("Москва", "Volvo");
-        tryCatchAutoruScan("Москва", "УАЗ");
+        tryCatchAvitoScan("Москва", "Lada");
+        tryCatchAvitoScan("Москва", "Audi");
+        tryCatchAvitoScan("Москва", "BMW");
+        tryCatchAvitoScan("Москва", "Cadillac");
+        tryCatchAvitoScan("Москва", "Chevrolet");
+        tryCatchAvitoScan("Москва", "Citroen");
+        tryCatchAvitoScan("Москва", "Fiat");
+        tryCatchAvitoScan("Москва", "Ford");
+        tryCatchAvitoScan("Москва", "Hyundai");
+        tryCatchAvitoScan("Москва", "Infiniti");
+        tryCatchAvitoScan("Москва", "Jaguar");
+        tryCatchAvitoScan("Москва", "Jeep");
+        tryCatchAvitoScan("Москва", "KIA");
+        tryCatchAvitoScan("Москва", "Land Rover");
+        tryCatchAvitoScan("Москва", "Lifan");
+        tryCatchAvitoScan("Москва", "MINI");
+        tryCatchAvitoScan("Москва", "Mazda");
+        tryCatchAvitoScan("Москва", "Mercedes-Benz");
+        tryCatchAvitoScan("Москва", "Mitsubishi");
+        tryCatchAvitoScan("Москва", "Nissan");
+        tryCatchAvitoScan("Москва", "Peugeot");
+        tryCatchAvitoScan("Москва", "Porsche");
+        tryCatchAvitoScan("Москва", "Ravon");
+        tryCatchAvitoScan("Москва", "Renault");
+        tryCatchAvitoScan("Москва", "Skoda");
+        tryCatchAvitoScan("Москва", "Subaru");
+        tryCatchAvitoScan("Москва", "Suzuki");
+        tryCatchAvitoScan("Москва", "Toyota");
+        tryCatchAvitoScan("Москва", "Volkswagen");
+        tryCatchAvitoScan("Москва", "Volvo");
+        tryCatchAvitoScan("Москва", "УАЗ");
     }
 
-    public void tryCatchAutoruScan(String city, String brand) {
+    public void tryCatchAvitoScan(String city, String brand) {
         try {
             UnstoppableDriver.getInstance().scan(AvitoSiteScanBuilder.build(city, brand));
         } catch (Throwable e) {

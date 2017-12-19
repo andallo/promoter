@@ -7,7 +7,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import ru.carbay.promoter.ds.ProxyDS;
 import ru.carbay.promoter.model.Proxy;
-import ru.carbay.promoter.services.us_proxy.ProxyList;
+import ru.carbay.promoter.services.proxy.ProxyList;
+import ru.carbay.promoter.utils.Pair;
 import ru.carbay.promoter.utils.TimeUtils;
 
 import java.util.*;
@@ -16,6 +17,7 @@ public class ScheduledProxyDriver extends AbstractDriver {
 
     private static DateTime launchProxyTime;
     private static WebDriver webDriver;
+    private static Proxy proxy;
 
     private static ScheduledProxyDriver instance;
 
@@ -30,8 +32,8 @@ public class ScheduledProxyDriver extends AbstractDriver {
 
     private ScheduledProxyDriver() {}
 
-    public WebDriver getDriver(boolean force) throws Exception {
-        if (webDriver != null && !force) {
+    public Pair<Proxy, WebDriver> getProxyAndDriver(boolean force) throws Exception {
+        if (webDriver != null && proxy != null && !force) {
             DateTime now = new DateTime(DateTimeZone.forTimeZone(TimeUtils.moscowTimeZone()));
             DateTime time_to_change_1 = now.minusDays(1).withTime(22, 59, 0, 0);
             DateTime time_to_change_2 = now.withTime(13, 59, 0, 0);
@@ -40,7 +42,7 @@ public class ScheduledProxyDriver extends AbstractDriver {
             if ((now.isBefore(time_to_change_2) && launchProxyTime.isAfter(time_to_change_1)) ||
                     now.isAfter(time_to_change_2) && now.isBefore(time_to_change_3) && launchProxyTime.isAfter(time_to_change_2) ||
                     now.isAfter(time_to_change_3) && launchProxyTime.isAfter(time_to_change_3)) {
-                return webDriver;
+                return new Pair<>(proxy, webDriver);
             }
         }
 
@@ -66,15 +68,12 @@ public class ScheduledProxyDriver extends AbstractDriver {
         bestProxy.setLastUsage(new Date());
         ProxyDS.save(bestProxy);
 
-        String PROXY = bestProxy.getIpAdress();
-        int PORT = Integer.valueOf(bestProxy.getPort());
-
         com.google.gson.JsonObject json = new com.google.gson.JsonObject();
         json.addProperty("proxyType", "MANUAL");
-        json.addProperty("httpProxy", PROXY);
-        json.addProperty("httpProxyPort", PORT);
-        json.addProperty("sslProxy", PROXY);
-        json.addProperty("sslProxyPort", PORT);
+        json.addProperty("httpProxy", bestProxy.getIpAdress());
+        json.addProperty("httpProxyPort", Integer.valueOf(bestProxy.getPort()));
+        json.addProperty("sslProxy", bestProxy.getIpAdress());
+        json.addProperty("sslProxyPort", Integer.valueOf(bestProxy.getPort()));
         DesiredCapabilities cap = new DesiredCapabilities();
         cap.setCapability("proxy", json);
         cap.setAcceptInsecureCerts(true);
@@ -84,8 +83,13 @@ public class ScheduledProxyDriver extends AbstractDriver {
             webDriver.close();
         }
         webDriver = new FirefoxDriver(cap);
+        proxy = bestProxy;
         launchProxyTime = new DateTime();
 
-        return webDriver;
+        return new Pair<>(proxy, webDriver);
+    }
+
+    public WebDriver getDriver(boolean force) throws Exception {
+        return getProxyAndDriver(force).getSecond();
     }
 }

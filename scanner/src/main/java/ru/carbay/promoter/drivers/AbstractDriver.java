@@ -1,15 +1,15 @@
 package ru.carbay.promoter.drivers;
 
 import org.openqa.selenium.WebDriver;
+import ru.carbay.promoter.ds.ProxyDS;
 import ru.carbay.promoter.ds.SiteScanDS;
-import ru.carbay.promoter.model.Offer;
-import ru.carbay.promoter.model.ScanResult;
-import ru.carbay.promoter.model.SiteScan;
+import ru.carbay.promoter.model.*;
 import ru.carbay.promoter.scanners.AutoruScanner;
 import ru.carbay.promoter.scanners.AvitoScanner;
 import ru.carbay.promoter.services.pager_duty.PagerDutyAlerts;
 import ru.carbay.promoter.utils.AutoruSiteScanBuilder;
 import ru.carbay.promoter.utils.AvitoSiteScanBuilder;
+import ru.carbay.promoter.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,18 +46,36 @@ public abstract class AbstractDriver {
                 boolean pageScanCompleted = false;
                 while (!pageScanCompleted) {
                     ScanResult scanResult;
+                    WebDriver webDriver;
+                    Proxy proxy;
+
+                    Pair<Proxy, WebDriver> pair = getProxyAndDriver(false);
+                    if (pair == null) {
+                        webDriver = getDriver(false);
+                        proxy = null;
+                    } else {
+                        webDriver = pair.getSecond();
+                        proxy = pair.getFirst();
+                    }
+
+                    Date startScanDate = new Date();
                     if (siteScan.getSite().equalsIgnoreCase("auto.ru")) {
-                        scanResult = AutoruScanner.scan(url, siteScan.getBrand(), getDriver(false));
+                        scanResult = AutoruScanner.scan(url, siteScan.getBrand(), webDriver);
                     } else if (siteScan.getSite().equalsIgnoreCase("avito.ru")) {
-                        scanResult = AvitoScanner.scan(url, siteScan.getBrand(), getDriver(false));
+                        scanResult = AvitoScanner.scan(url, siteScan.getBrand(), webDriver);
                     } else if (siteScan.getSite().equalsIgnoreCase("drom.ru")) {
                         throw new Exception("Unknown site: " + siteScan.getSite());
                     } else {
                         throw new Exception("Unknown site: " + siteScan.getSite());
                     }
 
+                    Date finishScanDate = new Date();
                     if (scanResult.getOffers().size() < 1) {
-                        PagerDutyAlerts.alert("Stop scanning", "0 offers on the page: " + url);
+                        if (proxy != null) {
+                            proxy.getProxyHistory().add(new ProxyHistory(startScanDate, finishScanDate, false));
+                            ProxyDS.save(proxy);
+                        }
+                        PagerDutyAlerts.alert((proxy == null ? "" : proxy.getIpAdress() + " ") + "stop scanning", "0 offers on the page: " + url);
                         System.out.println("--> 0 offers on the page " + url);
                         System.out.println("--> 'rescan' to scan again");
                         System.out.println("--> 'proxy' to change proxy and scan again");
@@ -77,6 +95,10 @@ public abstract class AbstractDriver {
                             }
                         }
                     } else {
+                        if (proxy != null) {
+                            proxy.getProxyHistory().add(new ProxyHistory(startScanDate, finishScanDate, true));
+                            ProxyDS.save(proxy);
+                        }
                         if (scanResult.isLastPage()) {
                             scanCompleted = true;
                         }
@@ -96,5 +118,6 @@ public abstract class AbstractDriver {
         }
     }
 
+    public abstract Pair<Proxy, WebDriver> getProxyAndDriver(boolean force) throws Exception;
     public abstract WebDriver getDriver(boolean force) throws Exception;
 }
