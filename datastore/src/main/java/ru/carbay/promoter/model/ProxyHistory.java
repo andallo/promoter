@@ -8,13 +8,6 @@ public class ProxyHistory {
     private Integer scanTimeSeconds;
     private boolean successful;
 
-    public ProxyHistory(Date startDate, Date finishDate, boolean successful) {
-        this.startScan = startDate;
-        this.scanTimeSeconds = (int) ((finishDate.getTime() - startDate.getTime()) / 1000l);
-        this.successful = successful;
-    }
-
-
     public void setStartScan(Date startScan) {
         this.startScan = startScan;
     }

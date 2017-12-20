@@ -72,7 +72,7 @@ public abstract class AbstractDriver {
                     Date finishScanDate = new Date();
                     if (scanResult.getOffers().size() < 1) {
                         if (proxy != null) {
-                            proxy.getProxyHistory().add(new ProxyHistory(startScanDate, finishScanDate, false));
+                            proxy.getProxyHistory().add(getProxyHistory(startScanDate, finishScanDate, false));
                             ProxyDS.save(proxy);
                         }
                         PagerDutyAlerts.alert((proxy == null ? "" : proxy.getIpAdress() + " ") + "stop scanning", "0 offers on the page: " + url);
@@ -96,7 +96,7 @@ public abstract class AbstractDriver {
                         }
                     } else {
                         if (proxy != null) {
-                            proxy.getProxyHistory().add(new ProxyHistory(startScanDate, finishScanDate, true));
+                            proxy.getProxyHistory().add(getProxyHistory(startScanDate, finishScanDate, true));
                             ProxyDS.save(proxy);
                         }
                         if (scanResult.isLastPage()) {
@@ -116,6 +116,15 @@ public abstract class AbstractDriver {
             System.out.println(t.getMessage());
             t.printStackTrace();
         }
+    }
+
+    private ProxyHistory getProxyHistory(Date startDate, Date finishDate, boolean successful) {
+        ProxyHistory proxyHistory = new ProxyHistory();
+        proxyHistory.setStartScan(startDate);
+        proxyHistory.setScanTimeSeconds((int) ((finishDate.getTime() - startDate.getTime()) / 1000l));
+        proxyHistory.setSuccessful(successful);
+
+        return proxyHistory;
     }
 
     public abstract Pair<Proxy, WebDriver> getProxyAndDriver(boolean force) throws Exception;

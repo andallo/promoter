@@ -70,10 +70,10 @@ public class ScheduledProxyDriver extends AbstractDriver {
 
         com.google.gson.JsonObject json = new com.google.gson.JsonObject();
         json.addProperty("proxyType", "MANUAL");
-        json.addProperty("httpProxy", bestProxy.getIpAdress());
-        json.addProperty("httpProxyPort", Integer.valueOf(bestProxy.getPort()));
-        json.addProperty("sslProxy", bestProxy.getIpAdress());
-        json.addProperty("sslProxyPort", Integer.valueOf(bestProxy.getPort()));
+        json.addProperty("httpProxy", bestProxy.getIpAdress() + ":" + bestProxy.getPort());
+        json.addProperty("sslProxy", bestProxy.getIpAdress() + ":" + bestProxy.getPort());
+        //json.addProperty("httpProxyPort", Integer.valueOf(bestProxy.getPort()));
+        //json.addProperty("sslProxyPort", Integer.valueOf(bestProxy.getPort()));
         DesiredCapabilities cap = new DesiredCapabilities();
         cap.setCapability("proxy", json);
         cap.setAcceptInsecureCerts(true);

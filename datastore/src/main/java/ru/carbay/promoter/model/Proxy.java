@@ -12,9 +12,8 @@ public class Proxy {
     private String port;
     private String country;
     private String provider;
-    private List<ProxyHistory> proxyHistory = new ArrayList<>();
+    private List<ProxyHistory> proxyHistory;
     private Date lastUsage;
-
 
     public void setIpAdress(String ipAdress) {
         this.ipAdress = ipAdress;
