@@ -3,11 +3,9 @@ package ru.carbay.promoter.jobs;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import ru.carbay.promoter.drivers.BestProxyDriver;
 import ru.carbay.promoter.drivers.ScheduledProxyDriver;
 import ru.carbay.promoter.drivers.UnstoppableDriver;
 import ru.carbay.promoter.utils.AutoruSiteScanBuilder;
-import ru.carbay.promoter.utils.AvitoSiteScanBuilder;
 
 public class AutoruScanJob implements Job {
 
@@ -15,11 +13,11 @@ public class AutoruScanJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         tryCatchAutoruScan("Москва", "Lada");
         tryCatchAutoruScan("Москва", "Audi");
+        tryCatchAutoruScan("Москва", "Bentley");
         tryCatchAutoruScan("Москва", "BMW");
         tryCatchAutoruScan("Москва", "Cadillac");
         tryCatchAutoruScan("Москва", "Chevrolet");
         tryCatchAutoruScan("Москва", "Citroen");
-        tryCatchAutoruScan("Москва", "Fiat");
         tryCatchAutoruScan("Москва", "Ford");
         tryCatchAutoruScan("Москва", "Honda");
         tryCatchAutoruScan("Москва", "Hyundai");

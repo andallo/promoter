@@ -8,7 +8,7 @@ import java.util.List;
 public class AutoruSiteScanBuilder {
 
     private static final String autoruTemplateUrl =
-            "https://auto.ru/%city%/cars/%brand%/new/?beaten=1&customs_state=1&geo_radius=100&image=true&sort_offers=fresh_relevance_1-DESC&top_days=off&currency=RUR&output_type=list&official_dealer=true&page_num_offers=%page_number%";
+            "https://auto.ru/%city%/cars/%brand%/new/?beaten=1&customs_state=1&geo_radius=100&image=true&in_stock=true&sort_offers=fresh_relevance_1-DESC&top_days=off&currency=RUR&output_type=list&official_dealer=true&page_num_offers=%page_number%";
 
     public static SiteScan build(String city, String brand) {
         List<String> pageUrls = new ArrayList<>();

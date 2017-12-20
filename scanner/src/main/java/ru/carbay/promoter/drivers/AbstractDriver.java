@@ -60,7 +60,7 @@ public abstract class AbstractDriver {
 
                     Date startScanDate = new Date();
                     if (siteScan.getSite().equalsIgnoreCase("auto.ru")) {
-                        scanResult = AutoruScanner.scan(url, siteScan.getBrand(), webDriver);
+                        scanResult = AutoruScanner.scan(currentPage, url, siteScan.getBrand(), webDriver);
                     } else if (siteScan.getSite().equalsIgnoreCase("avito.ru")) {
                         scanResult = AvitoScanner.scan(url, siteScan.getBrand(), webDriver);
                     } else if (siteScan.getSite().equalsIgnoreCase("drom.ru")) {

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class AutoruScanner {
 
-    public static ScanResult scan(String url, String brand, WebDriver webDriver) {
+    public static ScanResult scan(int currentPage, String url, String brand, WebDriver webDriver) {
         List<Offer> offers = new ArrayList<>();
         boolean lastPage = false;
 
@@ -68,9 +68,12 @@ public class AutoruScanner {
                 }
             }
 
-            WebElement nextButton = webDriver.findElement(By.className("pager__next"));
-            if (nextButton != null && nextButton.getAttribute("disabled") != null &&
-                    nextButton.getAttribute("disabled").equalsIgnoreCase("disabled")) {
+            List<WebElement> pageButtons = webDriver.findElement(By.className("pager__wrap")).findElement(By.className("radio-group")).findElements(By.tagName("label"));
+            WebElement lastPageButton = pageButtons.get(pageButtons.size()-1).findElement(By.tagName("button")).findElement(By.tagName("span"));
+            //webDriver.findElement(By.xpath("/div[contains(@class,'pager__wrap')]/span[contains(@class,'radio-group')]/label[last()]/button/span"));
+            if (lastPageButton != null
+                    && lastPageButton.getText() != null
+                    && lastPageButton.getText().equals(Integer.valueOf(currentPage).toString())) {
                 lastPage = true;
             }
         } catch (Throwable t) {
@@ -86,6 +89,6 @@ public class AutoruScanner {
         WebDriver webDriver = new FirefoxDriver();
         SiteScan siteScan = AutoruSiteScanBuilder.build("Москва", "Audi");
 
-        scan(siteScan.getPageUrls().get(0), siteScan.getBrand(), webDriver);
+        scan(1, siteScan.getPageUrls().get(0), siteScan.getBrand(), webDriver);
     }
 }
