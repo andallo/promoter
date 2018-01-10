@@ -16,6 +16,7 @@ public class SiteScan {
     private String site;
     private String city;
     private String brand;
+    private String model;
     private List<String> pageUrls;
     private List<Offer> offers;
     private String status;
@@ -84,4 +85,11 @@ public class SiteScan {
         this.started = started;
     }
 
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
 }

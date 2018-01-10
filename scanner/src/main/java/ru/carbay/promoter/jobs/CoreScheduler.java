@@ -55,10 +55,6 @@ public class CoreScheduler {
 
         Set<Trigger> triggers = new HashSet<>();
         triggers.add(newTrigger()
-                .withIdentity("AvitoScanJobTrigger7", group)
-                .withSchedule(dailyAtHourAndMinute(7,00).inTimeZone(TimeUtils.moscowTimeZone()))
-                .build());
-        triggers.add(newTrigger()
                 .withIdentity("AvitoScanJobTrigger8", group)
                 .withSchedule(dailyAtHourAndMinute(8,00).inTimeZone(TimeUtils.moscowTimeZone()))
                 .build());
@@ -122,14 +118,6 @@ public class CoreScheduler {
                 .withIdentity("AvitoScanJobTrigger23", group)
                 .withSchedule(dailyAtHourAndMinute(23,00).inTimeZone(TimeUtils.moscowTimeZone()))
                 .build());
-        triggers.add(newTrigger()
-                .withIdentity("AvitoScanJobTrigger0", group)
-                .withSchedule(dailyAtHourAndMinute(00,00).inTimeZone(TimeUtils.moscowTimeZone()))
-                .build());
-        triggers.add(newTrigger()
-                .withIdentity("AvitoScanJobTrigger1", group)
-                .withSchedule(dailyAtHourAndMinute(01,00).inTimeZone(TimeUtils.moscowTimeZone()))
-                .build());
 
         scheduler.scheduleJob(job, triggers, false);
     }
@@ -140,10 +128,6 @@ public class CoreScheduler {
                 .build();
 
         Set<Trigger> triggers = new HashSet<>();
-        triggers.add(newTrigger()
-                .withIdentity("ScanJobTrigger7", group)
-                .withSchedule(dailyAtHourAndMinute(7,00).inTimeZone(TimeUtils.moscowTimeZone()))
-                .build());
         triggers.add(newTrigger()
                 .withIdentity("ScanJobTrigger8", group)
                 .withSchedule(dailyAtHourAndMinute(8,00).inTimeZone(TimeUtils.moscowTimeZone()))
@@ -207,14 +191,6 @@ public class CoreScheduler {
         triggers.add(newTrigger()
                 .withIdentity("ScanJobTrigger23", group)
                 .withSchedule(dailyAtHourAndMinute(23,00).inTimeZone(TimeUtils.moscowTimeZone()))
-                .build());
-        triggers.add(newTrigger()
-                .withIdentity("ScanJobTrigger0", group)
-                .withSchedule(dailyAtHourAndMinute(00,00).inTimeZone(TimeUtils.moscowTimeZone()))
-                .build());
-        triggers.add(newTrigger()
-                .withIdentity("ScanJobTrigger1", group)
-                .withSchedule(dailyAtHourAndMinute(01,00).inTimeZone(TimeUtils.moscowTimeZone()))
                 .build());
 
         scheduler.scheduleJob(job, triggers, false);

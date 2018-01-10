@@ -87,7 +87,7 @@ public class AutoruScanner {
     public static void main(String[] args) {
         System.setProperty("webdriver.gecko.driver", "/Projects/promoter/firefox_driver/mac/geckodriver");
         WebDriver webDriver = new FirefoxDriver();
-        SiteScan siteScan = AutoruSiteScanBuilder.build("Москва", "Audi");
+        SiteScan siteScan = AutoruSiteScanBuilder.build("Москва", "Audi", "A3");
 
         scan(1, siteScan.getPageUrls().get(0), siteScan.getBrand(), webDriver);
     }

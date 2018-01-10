@@ -6,19 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AvitoSiteScanBuilder {
-    private static final String avitoTemplateUrl = "https://www.avito.ru/%city%/avtomobili/novyy/%brand%?user=2&s=104&p=%page_number%";
+    private static final String avitoTemplateUrl = "https://www.avito.ru/%city%/avtomobili/novyy/%brand%/%model%?user=2&s=104&p=%page_number%";
 
-    public static SiteScan build(String city, String brand) {
+    public static SiteScan build(String city, String brand, String model) {
         List<String> pageUrls = new ArrayList<>();
         String url = avitoTemplateUrl
                 .replace("%city%", urlCity(city))
-                .replace("%brand%", urlBrand(brand));
+                .replace("%brand%", urlBrand(brand))
+                .replace("%model%", urlModel(model));
         pageUrls.add(url.replace("%page_number%", "1"));
 
         SiteScan siteScan = new SiteScan();
         siteScan.setSite("Avito.ru");
         siteScan.setCity(city);
         siteScan.setBrand(brand);
+        siteScan.setModel(model);
         siteScan.setPageUrls(pageUrls);
 
         return siteScan;
@@ -42,6 +44,10 @@ public class AvitoSiteScanBuilder {
         }
 
         return brand.toLowerCase().replaceAll(" ", "_");
+    }
+
+    private static String urlModel(String model) {
+        return model.toLowerCase().replaceAll(" ", "_");
     }
 
     public static String pageUrl_next(String url) {

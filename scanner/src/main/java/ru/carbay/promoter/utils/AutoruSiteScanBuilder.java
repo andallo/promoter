@@ -8,19 +8,21 @@ import java.util.List;
 public class AutoruSiteScanBuilder {
 
     private static final String autoruTemplateUrl =
-            "https://auto.ru/%city%/cars/%brand%/new/?beaten=1&customs_state=1&geo_radius=100&image=true&in_stock=true&sort_offers=fresh_relevance_1-DESC&top_days=off&currency=RUR&output_type=list&official_dealer=true&page_num_offers=%page_number%";
+            "https://auto.ru/%city%/cars/%brand%/%model%/new/?beaten=1&customs_state=1&geo_radius=100&image=true&in_stock=true&sort_offers=fresh_relevance_1-DESC&top_days=off&currency=RUR&output_type=list&official_dealer=true&page_num_offers=%page_number%";
 
-    public static SiteScan build(String city, String brand) {
+    public static SiteScan build(String city, String brand, String model) {
         List<String> pageUrls = new ArrayList<>();
         String url = autoruTemplateUrl
                 .replace("%city%", urlCity(city))
-                .replace("%brand%", urlBrand(brand));
+                .replace("%brand%", urlBrand(brand))
+                .replace("%model%", urlModel(model));
         pageUrls.add(url.replace("%page_number%", "1"));
 
         SiteScan siteScan = new SiteScan();
         siteScan.setSite("Auto.ru");
         siteScan.setCity(city);
         siteScan.setBrand(brand);
+        siteScan.setModel(model);
         siteScan.setPageUrls(pageUrls);
 
         return siteScan;
@@ -57,6 +59,10 @@ public class AutoruSiteScanBuilder {
         }
 
         return brand.toLowerCase().replaceAll(" ", "_");
+    }
+
+    private static String urlModel(String model) {
+        return model.toLowerCase().replaceAll(" ", "_").replaceAll("-", "_");
     }
 
     private static String transliterate(String message){
