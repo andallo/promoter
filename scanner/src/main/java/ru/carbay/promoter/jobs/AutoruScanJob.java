@@ -15,7 +15,7 @@ public class AutoruScanJob implements Job {
         tryCatchAutoruScan("Москва", "Lada", "Vesta");
         tryCatchAutoruScan("Москва", "Lada", "Granta");
         tryCatchAutoruScan("Москва", "Lada", "Largus");
-        tryCatchAutoruScan("Москва", "Lada", "2121 4x4");
+        tryCatchAutoruScan("Москва", "Lada", "2121");
         tryCatchAutoruScan("Москва", "Lada", "XRAY");
         //tryCatchAutoruScan("Москва", "Audi", "A3");
         //tryCatchAutoruScan("Москва", "Bentley", "Bentayga");
