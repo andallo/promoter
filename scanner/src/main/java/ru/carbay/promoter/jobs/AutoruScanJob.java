@@ -37,7 +37,7 @@ public class AutoruScanJob implements Job {
         //tryCatchAutoruScan("Москва", "Land Rover");
         //tryCatchAutoruScan("Москва", "Lifan");
         //tryCatchAutoruScan("Москва", "MINI");
-        tryCatchAutoruScan("Москва", "Mazda", "CX5");
+        tryCatchAutoruScan("Москва", "Mazda", "CX-5");
         tryCatchAutoruScan("Москва", "Mazda", "6");
         //tryCatchAutoruScan("Москва", "Mercedes-Benz");
         tryCatchAutoruScan("Москва", "Mitsubishi", "Outlander");
@@ -56,7 +56,7 @@ public class AutoruScanJob implements Job {
         tryCatchAutoruScan("Москва", "Skoda", "Octavia");
         //tryCatchAutoruScan("Москва", "Subaru");
         //tryCatchAutoruScan("Москва", "Suzuki");
-        tryCatchAutoruScan("Москва", "Toyota", "RAV4");
+        tryCatchAutoruScan("Москва", "Toyota", "RAV 4");
         tryCatchAutoruScan("Москва", "Toyota", "Camry");
         tryCatchAutoruScan("Москва", "Volkswagen", "Polo");
         tryCatchAutoruScan("Москва", "Volkswagen", "Tiguan");
