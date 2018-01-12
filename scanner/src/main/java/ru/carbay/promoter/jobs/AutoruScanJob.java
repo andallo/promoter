@@ -4,18 +4,19 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import ru.carbay.promoter.drivers.ScheduledProxyDriver;
+import ru.carbay.promoter.drivers.UnstoppableDriver;
 import ru.carbay.promoter.utils.AutoruSiteScanBuilder;
 
 public class AutoruScanJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        tryCatchAutoruScan("Москва", "Lada", "Kalina");
         tryCatchAutoruScan("Москва", "Lada", "Vesta");
         tryCatchAutoruScan("Москва", "Lada", "Granta");
         tryCatchAutoruScan("Москва", "Lada", "Largus");
-        tryCatchAutoruScan("Москва", "Lada", "2131 4x4");
+        tryCatchAutoruScan("Москва", "Lada", "2121 4x4");
         tryCatchAutoruScan("Москва", "Lada", "XRAY");
-        tryCatchAutoruScan("Москва", "Lada", "Kalina");
         //tryCatchAutoruScan("Москва", "Audi", "A3");
         //tryCatchAutoruScan("Москва", "Bentley", "Bentayga");
         //tryCatchAutoruScan("Москва", "BMW", "1er");

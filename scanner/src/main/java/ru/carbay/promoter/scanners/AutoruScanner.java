@@ -11,6 +11,7 @@ import ru.carbay.promoter.utils.AutoruSiteScanBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class AutoruScanner {
 
@@ -68,13 +69,21 @@ public class AutoruScanner {
                 }
             }
 
-            List<WebElement> pageButtons = webDriver.findElement(By.className("pager__wrap")).findElement(By.className("radio-group")).findElements(By.tagName("label"));
-            WebElement lastPageButton = pageButtons.get(pageButtons.size()-1).findElement(By.tagName("button")).findElement(By.tagName("span"));
-            //webDriver.findElement(By.xpath("/div[contains(@class,'pager__wrap')]/span[contains(@class,'radio-group')]/label[last()]/button/span"));
-            if (lastPageButton != null
-                    && lastPageButton.getText() != null
-                    && lastPageButton.getText().equals(Integer.valueOf(currentPage).toString())) {
+            try {
+                webDriver.findElement(By.className("pager__wrap"));
+            } catch (Throwable t) {
                 lastPage = true;
+            }
+
+            if (!lastPage) {
+                List<WebElement> pageButtons = webDriver.findElement(By.className("pager__wrap")).findElement(By.className("radio-group")).findElements(By.tagName("label"));
+                WebElement lastPageButton = pageButtons.get(pageButtons.size() - 1).findElement(By.tagName("button")).findElement(By.tagName("span"));
+                //webDriver.findElement(By.xpath("/div[contains(@class,'pager__wrap')]/span[contains(@class,'radio-group')]/label[last()]/button/span"));
+                if (lastPageButton != null
+                        && lastPageButton.getText() != null
+                        && lastPageButton.getText().equals(Integer.valueOf(currentPage).toString())) {
+                    lastPage = true;
+                }
             }
         } catch (Throwable t) {
             System.out.println(t.getMessage());
