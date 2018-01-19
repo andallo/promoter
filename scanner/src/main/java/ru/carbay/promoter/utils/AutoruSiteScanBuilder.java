@@ -1,6 +1,6 @@
 package ru.carbay.promoter.utils;
 
-import ru.carbay.promoter.model.SiteScan;
+import ru.carbay.promoter.model.ds.SiteScan;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,8 @@
-package ru.carbay.promoter.model;
+package ru.carbay.promoter.model.ds;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,12 +10,28 @@ import java.util.List;
 
 @Entity(value = "promoter.proxies", noClassnameStored = true)
 public class Proxy {
+
+    @Id
+    private ObjectId objectId;
+
     private String ipAdress;
     private String port;
     private String country;
     private String provider;
-    private List<ProxyHistory> proxyHistory = new ArrayList<>();
+    private List<String> errorDates = new ArrayList<>();
     private Date lastUsage;
+
+    public String getId() {
+        return objectId == null ? null : objectId.toString();
+    }
+
+    public ObjectId getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(ObjectId objectId) {
+        this.objectId = objectId;
+    }
 
     public void setIpAdress(String ipAdress) {
         this.ipAdress = ipAdress;
@@ -55,11 +73,11 @@ public class Proxy {
         this.provider = provider;
     }
 
-    public List<ProxyHistory> getProxyHistory() {
-        return proxyHistory;
+    public List<String> getErrorDates() {
+        return errorDates;
     }
 
-    public void setProxyHistory(List<ProxyHistory> proxyHistory) {
-        this.proxyHistory = proxyHistory;
+    public void setErrorDates(List<String> errorDates) {
+        this.errorDates = errorDates;
     }
 }

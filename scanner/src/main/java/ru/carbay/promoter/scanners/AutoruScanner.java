@@ -6,12 +6,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import ru.carbay.promoter.model.Offer;
 import ru.carbay.promoter.model.ScanResult;
-import ru.carbay.promoter.model.SiteScan;
+import ru.carbay.promoter.model.ds.SiteScan;
 import ru.carbay.promoter.utils.AutoruSiteScanBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class AutoruScanner {
 

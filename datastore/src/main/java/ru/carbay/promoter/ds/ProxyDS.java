@@ -1,7 +1,7 @@
 package ru.carbay.promoter.ds;
 
 
-import ru.carbay.promoter.model.Proxy;
+import ru.carbay.promoter.model.ds.Proxy;
 
 import java.util.ArrayList;
 import java.util.List;

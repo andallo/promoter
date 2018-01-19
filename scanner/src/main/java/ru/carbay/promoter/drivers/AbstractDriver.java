@@ -4,13 +4,17 @@ import org.openqa.selenium.WebDriver;
 import ru.carbay.promoter.ds.ProxyDS;
 import ru.carbay.promoter.ds.SiteScanDS;
 import ru.carbay.promoter.model.*;
+import ru.carbay.promoter.model.ds.Proxy;
+import ru.carbay.promoter.model.ds.SiteScan;
 import ru.carbay.promoter.scanners.AutoruScanner;
 import ru.carbay.promoter.scanners.AvitoScanner;
 import ru.carbay.promoter.services.pager_duty.PagerDutyAlerts;
 import ru.carbay.promoter.utils.AutoruSiteScanBuilder;
 import ru.carbay.promoter.utils.AvitoSiteScanBuilder;
 import ru.carbay.promoter.utils.Pair;
+import ru.carbay.promoter.utils.TimeUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,17 +50,10 @@ public abstract class AbstractDriver {
                 boolean pageScanCompleted = false;
                 while (!pageScanCompleted) {
                     ScanResult scanResult;
-                    WebDriver webDriver;
-                    Proxy proxy;
 
-                    Pair<Proxy, WebDriver> pair = getProxyAndDriver(false);
-                    if (pair == null) {
-                        webDriver = getDriver(false);
-                        proxy = null;
-                    } else {
-                        webDriver = pair.getSecond();
-                        proxy = pair.getFirst();
-                    }
+                    Pair<Proxy, WebDriver> pair = getProxyAndDriver(false, false);
+                    Proxy proxy = pair.getFirst();
+                    WebDriver webDriver = pair.getSecond();
 
                     Date startScanDate = new Date();
                     if (siteScan.getSite().equalsIgnoreCase("auto.ru")) {
@@ -72,7 +69,7 @@ public abstract class AbstractDriver {
                     Date finishScanDate = new Date();
                     if (scanResult.getOffers().size() < 1) {
                         if (proxy != null) {
-                            proxy.getProxyHistory().add(getProxyHistory(startScanDate, finishScanDate, false));
+                            proxy.getErrorDates().add(TimeUtils.nowMoscowTimeAsString());
                             ProxyDS.save(proxy);
                         }
                         PagerDutyAlerts.alert((proxy == null ? "" : proxy.getIpAdress() + " ") + "stop scanning", "0 offers on the page: " + url);
@@ -86,7 +83,7 @@ public abstract class AbstractDriver {
                             if (typed.equals("rescan")) {
                                 break;
                             } else if (typed.equals("proxy")) {
-                                getDriver(true);
+                                getProxyAndDriver(true, false);
                                 break;
                             } else if (typed.equals("stop")) {
                                 pageScanCompleted = true;
@@ -95,10 +92,6 @@ public abstract class AbstractDriver {
                             }
                         }
                     } else {
-                        if (proxy != null) {
-                            proxy.getProxyHistory().add(getProxyHistory(startScanDate, finishScanDate, true));
-                            ProxyDS.save(proxy);
-                        }
                         if (scanResult.isLastPage()) {
                             scanCompleted = true;
                         }
@@ -118,15 +111,5 @@ public abstract class AbstractDriver {
         }
     }
 
-    private ProxyHistory getProxyHistory(Date startDate, Date finishDate, boolean successful) {
-        ProxyHistory proxyHistory = new ProxyHistory();
-        proxyHistory.setStartScan(startDate);
-        proxyHistory.setScanTimeSeconds((int) ((finishDate.getTime() - startDate.getTime()) / 1000l));
-        proxyHistory.setSuccessful(successful);
-
-        return proxyHistory;
-    }
-
-    public abstract Pair<Proxy, WebDriver> getProxyAndDriver(boolean force) throws Exception;
-    public abstract WebDriver getDriver(boolean force) throws Exception;
+    public abstract Pair<Proxy, WebDriver> getProxyAndDriver(boolean changeProxy, boolean reloadDriver) throws Exception;
 }

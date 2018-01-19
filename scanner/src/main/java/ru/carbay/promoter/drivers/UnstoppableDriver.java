@@ -2,7 +2,7 @@ package ru.carbay.promoter.drivers;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import ru.carbay.promoter.model.Proxy;
+import ru.carbay.promoter.model.ds.Proxy;
 import ru.carbay.promoter.utils.Pair;
 
 public class UnstoppableDriver extends AbstractDriver {
@@ -25,12 +25,7 @@ public class UnstoppableDriver extends AbstractDriver {
     }
 
     @Override
-    public WebDriver getDriver(boolean force) {
-        return webDriver;
-    }
-
-    @Override
-    public Pair<Proxy, WebDriver> getProxyAndDriver(boolean force) throws Exception {
-        return null;
+    public Pair<Proxy, WebDriver> getProxyAndDriver(boolean changeProxy, boolean reloadDriver) throws Exception {
+        return new Pair<>(null, webDriver);
     }
 }

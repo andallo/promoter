@@ -1,6 +1,9 @@
-package ru.carbay.promoter.model;
+package ru.carbay.promoter.model.ds;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import ru.carbay.promoter.model.Offer;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +14,10 @@ import java.util.List;
 
 @Entity(value = "promoter.site_scan", noClassnameStored = true)
 public class SiteScan {
+
+    @Id
+    private ObjectId objectId;
+
     private Date started;
     private Date completed;
     private String site;
@@ -20,6 +27,18 @@ public class SiteScan {
     private List<String> pageUrls;
     private List<Offer> offers;
     private String status;
+
+    public String getId() {
+        return objectId == null ? null : objectId.toString();
+    }
+
+    public ObjectId getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(ObjectId objectId) {
+        this.objectId = objectId;
+    }
 
     public void setSite(String site) {
         this.site = site;

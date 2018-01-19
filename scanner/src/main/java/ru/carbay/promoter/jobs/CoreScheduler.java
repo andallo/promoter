@@ -114,10 +114,6 @@ public class CoreScheduler {
                 .withIdentity("AvitoScanJobTrigger22", group)
                 .withSchedule(dailyAtHourAndMinute(22,00).inTimeZone(TimeUtils.moscowTimeZone()))
                 .build());
-        triggers.add(newTrigger()
-                .withIdentity("AvitoScanJobTrigger23", group)
-                .withSchedule(dailyAtHourAndMinute(23,00).inTimeZone(TimeUtils.moscowTimeZone()))
-                .build());
 
         scheduler.scheduleJob(job, triggers, false);
     }
@@ -187,10 +183,6 @@ public class CoreScheduler {
         triggers.add(newTrigger()
                 .withIdentity("ScanJobTrigger22", group)
                 .withSchedule(dailyAtHourAndMinute(22,00).inTimeZone(TimeUtils.moscowTimeZone()))
-                .build());
-        triggers.add(newTrigger()
-                .withIdentity("ScanJobTrigger23", group)
-                .withSchedule(dailyAtHourAndMinute(23,00).inTimeZone(TimeUtils.moscowTimeZone()))
                 .build());
 
         scheduler.scheduleJob(job, triggers, false);

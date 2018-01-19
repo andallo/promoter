@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import ru.carbay.promoter.ds.ProxyDS;
-import ru.carbay.promoter.model.Proxy;
+import ru.carbay.promoter.model.ds.Proxy;
 import ru.carbay.promoter.services.proxy.ProxyList;
 import ru.carbay.promoter.utils.Pair;
 import ru.carbay.promoter.utils.TimeUtils;
@@ -32,12 +32,13 @@ public class ScheduledProxyDriver extends AbstractDriver {
 
     private ScheduledProxyDriver() {}
 
-    public Pair<Proxy, WebDriver> getProxyAndDriver(boolean force) throws Exception {
-        if (webDriver != null && proxy != null && !force) {
+    @Override
+    public Pair<Proxy, WebDriver> getProxyAndDriver(boolean changeProxy, boolean reloadDriver) throws Exception {
+        if (webDriver != null && proxy != null && !changeProxy) {
             DateTime now = new DateTime(DateTimeZone.forTimeZone(TimeUtils.moscowTimeZone()));
-            DateTime time_to_change_1 = now.minusDays(1).withTime(22, 59, 0, 0);
+            DateTime time_to_change_1 = now.minusDays(1).withTime(20, 59, 0, 0);
             DateTime time_to_change_2 = now.withTime(13, 59, 0, 0);
-            DateTime time_to_change_3 = now.withTime(22, 59, 0, 0);
+            DateTime time_to_change_3 = now.withTime(20, 59, 0, 0);
 
             if ((now.isBefore(time_to_change_2) && launchProxyTime.isAfter(time_to_change_1)) ||
                     now.isAfter(time_to_change_2) && now.isBefore(time_to_change_3) && launchProxyTime.isAfter(time_to_change_2) ||
@@ -87,9 +88,5 @@ public class ScheduledProxyDriver extends AbstractDriver {
         launchProxyTime = new DateTime();
 
         return new Pair<>(proxy, webDriver);
-    }
-
-    public WebDriver getDriver(boolean force) throws Exception {
-        return getProxyAndDriver(force).getSecond();
     }
 }
