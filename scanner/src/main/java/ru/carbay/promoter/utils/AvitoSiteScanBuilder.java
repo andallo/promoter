@@ -1,11 +1,13 @@
 package ru.carbay.promoter.utils;
 
-import ru.carbay.promoter.model.ds.SiteScan;
+import ru.carbay.promoter.model.SiteScan;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AvitoSiteScanBuilder {
+
+    public static final String AvitoSiteName = "avito";
     private static final String avitoTemplateUrl = "https://www.avito.ru/%city%/avtomobili/novyy/%brand%/%model%?user=2&s=104&p=%page_number%";
 
     public static SiteScan build(String city, String brand, String model) {
@@ -17,7 +19,7 @@ public class AvitoSiteScanBuilder {
         pageUrls.add(url.replace("%page_number%", "1"));
 
         SiteScan siteScan = new SiteScan();
-        siteScan.setSite("Avito.ru");
+        siteScan.setSite(AvitoSiteName);
         siteScan.setCity(city);
         siteScan.setBrand(brand);
         siteScan.setModel(model);

@@ -1,4 +1,4 @@
-package ru.carbay.promoter.model.ds;
+package ru.carbay.promoter.model;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;

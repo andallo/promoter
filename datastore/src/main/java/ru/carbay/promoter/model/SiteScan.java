@@ -1,4 +1,4 @@
-package ru.carbay.promoter.model.ds;
+package ru.carbay.promoter.model;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
@@ -25,7 +25,7 @@ public class SiteScan {
     private String brand;
     private String model;
     private List<String> pageUrls;
-    private List<Offer> offers;
+    private Integer offers;
     private String status;
 
     public String getId() {
@@ -64,20 +64,12 @@ public class SiteScan {
         this.brand = brand;
     }
 
-    public void setOffers(List<Offer> offers) {
-        this.offers = offers;
-    }
-
     public String getCity() {
         return city;
     }
 
     public String getBrand() {
         return brand;
-    }
-
-    public List<Offer> getOffers() {
-        return offers;
     }
 
     public String getStatus() {
@@ -110,5 +102,13 @@ public class SiteScan {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public Integer getOffers() {
+        return offers;
+    }
+
+    public void setOffers(Integer offers) {
+        this.offers = offers;
     }
 }

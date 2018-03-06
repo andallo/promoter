@@ -1,29 +1,25 @@
 package ru.carbay.promoter.drivers;
 
 import org.openqa.selenium.WebDriver;
+import ru.carbay.promoter.ds.OfferDS;
 import ru.carbay.promoter.ds.ProxyDS;
 import ru.carbay.promoter.ds.SiteScanDS;
 import ru.carbay.promoter.model.*;
-import ru.carbay.promoter.model.ds.Proxy;
-import ru.carbay.promoter.model.ds.SiteScan;
+import ru.carbay.promoter.model.Proxy;
+import ru.carbay.promoter.model.SiteScan;
 import ru.carbay.promoter.scanners.AutoruScanner;
 import ru.carbay.promoter.scanners.AvitoScanner;
 import ru.carbay.promoter.services.pager_duty.PagerDutyAlerts;
-import ru.carbay.promoter.utils.AutoruSiteScanBuilder;
-import ru.carbay.promoter.utils.AvitoSiteScanBuilder;
-import ru.carbay.promoter.utils.Pair;
-import ru.carbay.promoter.utils.TimeUtils;
+import ru.carbay.promoter.utils.*;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public abstract class AbstractDriver {
 
-    private static final int MAX_OFFERS_TO_SCAN = 100;
-    private static final int MAX_PAGES_TO_SCAN = 5;
+    private static final int MAX_OFFERS_TO_SCAN = 1000;
+    private static final int MAX_PAGES_TO_SCAN = 25;
+
+    private static String previousBrand = "";
 
     public void scan(SiteScan siteScan) throws Exception {
         try {
@@ -51,15 +47,18 @@ public abstract class AbstractDriver {
                 while (!pageScanCompleted) {
                     ScanResult scanResult;
 
-                    Pair<Proxy, WebDriver> pair = getProxyAndDriver(false, false);
+                    boolean isBrandChanged = !previousBrand.equals(siteScan.getBrand());
+                    previousBrand = siteScan.getBrand();
+
+                    Pair<Proxy, WebDriver> pair = getProxyAndDriver(false, isBrandChanged);
                     Proxy proxy = pair.getFirst();
                     WebDriver webDriver = pair.getSecond();
 
                     Date startScanDate = new Date();
                     if (siteScan.getSite().equalsIgnoreCase("auto.ru")) {
-                        scanResult = AutoruScanner.scan(currentPage, url, siteScan.getBrand(), webDriver);
+                        scanResult = AutoruScanner.scan(currentPage, url, siteScan.getBrand(), siteScan.getModel(), webDriver);
                     } else if (siteScan.getSite().equalsIgnoreCase("avito.ru")) {
-                        scanResult = AvitoScanner.scan(url, siteScan.getBrand(), webDriver);
+                        scanResult = AvitoScanner.scan(url, siteScan.getBrand(), siteScan.getModel(), webDriver);
                     } else if (siteScan.getSite().equalsIgnoreCase("drom.ru")) {
                         throw new Exception("Unknown site: " + siteScan.getSite());
                     } else {
@@ -101,15 +100,19 @@ public abstract class AbstractDriver {
                 }
             }
 
-            siteScan.setOffers(offers);
+            siteScan.setOffers(offers.size());
             siteScan.setCompleted(new Date());
             siteScan.setStatus("completed");
             SiteScanDS.save(siteScan);
+
+            offers.forEach(offer -> {
+                OfferDS.save(offer);
+            });
         } catch (Throwable t) {
             System.out.println(t.getMessage());
             t.printStackTrace();
         }
     }
 
-    public abstract Pair<Proxy, WebDriver> getProxyAndDriver(boolean changeProxy, boolean reloadDriver) throws Exception;
+    public abstract Pair<Proxy, WebDriver> getProxyAndDriver(boolean changeProxy, boolean isBrandChanged) throws Exception;
 }

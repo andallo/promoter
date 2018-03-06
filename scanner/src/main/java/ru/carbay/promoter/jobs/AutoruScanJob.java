@@ -3,6 +3,7 @@ package ru.carbay.promoter.jobs;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import ru.carbay.promoter.drivers.EveryBrandProxyDriver;
 import ru.carbay.promoter.drivers.ScheduledProxyDriver;
 import ru.carbay.promoter.drivers.UnstoppableDriver;
 import ru.carbay.promoter.utils.AutoruSiteScanBuilder;
@@ -13,10 +14,10 @@ public class AutoruScanJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         tryCatchAutoruScan("Москва", "Lada", "Kalina");
         tryCatchAutoruScan("Москва", "Lada", "Vesta");
-        tryCatchAutoruScan("Москва", "Lada", "Granta");
+        //tryCatchAutoruScan("Москва", "Lada", "Granta");
         tryCatchAutoruScan("Москва", "Lada", "Largus");
-        tryCatchAutoruScan("Москва", "Lada", "2121");
-        tryCatchAutoruScan("Москва", "Lada", "XRAY");
+        //tryCatchAutoruScan("Москва", "Lada", "2121");
+        //tryCatchAutoruScan("Москва", "Lada", "XRAY");
         //tryCatchAutoruScan("Москва", "Audi", "A3");
         //tryCatchAutoruScan("Москва", "Bentley", "Bentayga");
         //tryCatchAutoruScan("Москва", "BMW", "1er");
@@ -32,7 +33,7 @@ public class AutoruScanJob implements Job {
         //tryCatchAutoruScan("Москва", "Infiniti");
         //tryCatchAutoruScan("Москва", "Jaguar");
         //tryCatchAutoruScan("Москва", "Jeep");
-        tryCatchAutoruScan("Москва", "KIA", "Rio");
+        //tryCatchAutoruScan("Москва", "KIA", "Rio");
         tryCatchAutoruScan("Москва", "KIA", "Sportage");
         //tryCatchAutoruScan("Москва", "Land Rover");
         //tryCatchAutoruScan("Москва", "Lifan");
@@ -48,9 +49,9 @@ public class AutoruScanJob implements Job {
         tryCatchAutoruScan("Москва", "Peugeot", "3008");
         //tryCatchAutoruScan("Москва", "Porsche");
         //tryCatchAutoruScan("Москва", "Ravon");
-        tryCatchAutoruScan("Москва", "Renault", "Duster");
+        //tryCatchAutoruScan("Москва", "Renault", "Duster");
         tryCatchAutoruScan("Москва", "Renault", "Logan");
-        tryCatchAutoruScan("Москва", "Renault", "Sandero");
+        //tryCatchAutoruScan("Москва", "Renault", "Sandero");
         tryCatchAutoruScan("Москва", "Renault", "Kaptur");
         tryCatchAutoruScan("Москва", "Skoda", "Rapid");
         tryCatchAutoruScan("Москва", "Skoda", "Octavia");
@@ -67,7 +68,7 @@ public class AutoruScanJob implements Job {
 
     public void tryCatchAutoruScan(String city, String brand, String model) {
         try {
-            ScheduledProxyDriver.getInstance().scan(AutoruSiteScanBuilder.build(city, brand, model));
+            UnstoppableDriver.getInstance().scan(AutoruSiteScanBuilder.build(city, brand, model));
         } catch (Throwable e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

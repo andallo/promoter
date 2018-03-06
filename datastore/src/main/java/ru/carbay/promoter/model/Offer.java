@@ -1,24 +1,49 @@
 package ru.carbay.promoter.model;
 
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+
 import java.util.Date;
 import java.util.List;
 
+@Entity(value = "promoter.offers", noClassnameStored = true)
 public class Offer {
-    private String id;
+
+    @Id
+    private ObjectId objectId;
+
+    private String siteId;
     private String url;
-    private Integer views;
+    private String scanFrom;
+    private Date scanned;
+    private String brand;
     private String model;
+    private String generation;
     private Integer year;
     private Integer price;
     private String dealerName;
-    private List<String> badges;
+    private String modification;
+    private String drive;
+    private String body;
+    private String color;
+    private Integer views;
+    private Integer position;
     private Boolean isPremium;
     private Boolean isTopJump;
     private Boolean isVip;
     private Date created;
 
-    public void setId(String id) {
-        this.id = id;
+    public String getId() {
+        return objectId == null ? null : objectId.toString();
+    }
+
+    public ObjectId getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(ObjectId objectId) {
+        this.objectId = objectId;
     }
 
     public void setModel(String model) {
@@ -31,10 +56,6 @@ public class Offer {
 
     public void setPremium(Boolean premium) {
         isPremium = premium;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getModel() {
@@ -89,14 +110,6 @@ public class Offer {
         return views;
     }
 
-    public List<String> getBadges() {
-        return badges;
-    }
-
-    public void setBadges(List<String> badges) {
-        this.badges = badges;
-    }
-
     public Date getCreated() {
         return created;
     }
@@ -111,5 +124,85 @@ public class Offer {
 
     public void setVip(Boolean vip) {
         isVip = vip;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public String getModification() {
+        return modification;
+    }
+
+    public String getDrive() {
+        return drive;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setModification(String modification) {
+        this.modification = modification;
+    }
+
+    public void setDrive(String drive) {
+        this.drive = drive;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getScanFrom() {
+        return scanFrom;
+    }
+
+    public void setScanFrom(String scanFrom) {
+        this.scanFrom = scanFrom;
+    }
+
+    public String getGeneration() {
+        return generation;
+    }
+
+    public void setGeneration(String generation) {
+        this.generation = generation;
+    }
+
+    public void setScanned(Date scanned) {
+        this.scanned = scanned;
+    }
+
+    public Date getScanned() {
+        return scanned;
+    }
+
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
     }
 }

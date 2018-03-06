@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.carbay.promoter.model.Offer;
 import ru.carbay.promoter.model.ScanResult;
+import ru.carbay.promoter.utils.AvitoSiteScanBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -30,7 +31,7 @@ public class AvitoScanner {
         monthes.put("декабря", "12");
     }
 
-    public static ScanResult scan(String url, String brand, WebDriver webDriver) {
+    public static ScanResult scan(String url, String brand, String model, WebDriver webDriver) {
         List<Offer> offers = new ArrayList<>();
         boolean lastPage = true;
 
@@ -38,6 +39,7 @@ public class AvitoScanner {
             webDriver.get(url);
 
             List<WebElement> offerElements = webDriver.findElements(By.className("item"));
+            int i = 1;
             for (WebElement offerElement : offerElements) {
                 try {
                     Offer offer = new Offer();
@@ -78,8 +80,13 @@ public class AvitoScanner {
                     }
 
                     offer.setDealerName(dealerName);
-                    offer.setId(offerUrl);
-                    offer.setModel(offerModel);
+                    offer.setUrl(offerUrl);
+                    offer.setScanFrom("avito");
+                    offer.setScanned(new Date());
+                    offer.setViews(0);
+                    offer.setPosition(i);
+                    offer.setModel(model);
+                    offer.setBrand(brand);
                     offer.setYear(Integer.valueOf(offerYear));
                     offer.setPrice(Integer.valueOf(offerPrice));
                     offer.setPremium(promo_top);
@@ -88,6 +95,7 @@ public class AvitoScanner {
                     offer.setCreated(offerDate_asDate);
 
                     offers.add(offer);
+                    ++i;
                 } catch (Throwable t) {
                     System.out.println(t.getMessage());
                     t.printStackTrace();

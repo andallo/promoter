@@ -6,15 +6,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import ru.carbay.promoter.model.Offer;
 import ru.carbay.promoter.model.ScanResult;
-import ru.carbay.promoter.model.ds.SiteScan;
+import ru.carbay.promoter.model.SiteScan;
 import ru.carbay.promoter.utils.AutoruSiteScanBuilder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AutoruScanner {
 
-    public static ScanResult scan(int currentPage, String url, String brand, WebDriver webDriver) {
+    public static ScanResult scan(int currentPage, String url, String brand, String model, WebDriver webDriver) {
         List<Offer> offers = new ArrayList<>();
         boolean lastPage = false;
 
@@ -22,6 +23,7 @@ public class AutoruScanner {
             webDriver.get(url);
 
             List<WebElement> offerElements = webDriver.findElements(By.className("listing-item"));
+            int i = 1;
             for (WebElement offerElement : offerElements) {
                 try {
                     Offer offer = new Offer();
@@ -30,16 +32,14 @@ public class AutoruScanner {
                     String offerModel = offerElement.findElement(By.className("listing-item__link")).getText();
                     String offerYear = offerElement.findElement(By.className("listing-item__year")).getText();
                     String offerPrice = offerElement.findElement(By.className("listing-item__price")).getText();
+                    String description = offerElement.findElement(By.className("listing-item__description")).getText();
                     offerModel = offerModel.replace(brand, "").trim();
                     offerPrice = offerPrice.replaceAll("[^0-9]","");
-
-                    List<String> badges = new ArrayList<>();
-                    List<WebElement> badgeElements = offerElement.findElements(By.className("listing-item__badge"));
-                    if (!badgeElements.equals(null) && badgeElements.size() != 0) {
-                        badgeElements.forEach((element) -> {
-                            badges.add(element.getText());
-                        });
-                    }
+                    String[] descriptionParams = description.split(",");
+                    String offerModification = descriptionParams[0];
+                    String offerDrive = descriptionParams[1];
+                    String offerBody = descriptionParams[2];
+                    String offerColor = descriptionParams[3];
 
                     boolean promo_top = false;
                     List<WebElement> promo_topElements = offerElement.findElements(By.className("icon_type_top"));
@@ -53,15 +53,25 @@ public class AutoruScanner {
                     }
 
                     offer.setDealerName(dealerName);
-                    offer.setId(offerUrl);
-                    offer.setModel(offerModel);
+                    offer.setUrl(offerUrl);
+                    offer.setScanFrom("auto.ru");
+                    offer.setScanned(new Date());
+                    offer.setViews(0);
+                    offer.setPosition(i);
+                    offer.setBrand(brand);
+                    offer.setModel(model);
+                    offer.setGeneration(offerModel);
                     offer.setYear(Integer.valueOf(offerYear));
                     offer.setPrice(Integer.valueOf(offerPrice));
+                    offer.setModification(offerModification.trim());
+                    offer.setDrive(offerDrive.trim());
+                    offer.setBody(offerBody.trim());
+                    offer.setColor(offerColor.trim());
                     offer.setPremium(promo_top);
                     offer.setTopJump(promo_jump);
-                    offer.setBadges(badges);
 
                     offers.add(offer);
+                    ++i;
                 } catch (Throwable t) {
                     System.out.println(t.getMessage());
                     t.printStackTrace();
@@ -97,6 +107,6 @@ public class AutoruScanner {
         WebDriver webDriver = new FirefoxDriver();
         SiteScan siteScan = AutoruSiteScanBuilder.build("Москва", "Audi", "A3");
 
-        scan(1, siteScan.getPageUrls().get(0), siteScan.getBrand(), webDriver);
+        scan(1, siteScan.getPageUrls().get(0), siteScan.getBrand(), siteScan.getModel(), webDriver);
     }
 }

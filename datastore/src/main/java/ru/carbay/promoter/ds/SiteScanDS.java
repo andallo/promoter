@@ -1,6 +1,6 @@
 package ru.carbay.promoter.ds;
 
-import ru.carbay.promoter.model.ds.SiteScan;
+import ru.carbay.promoter.model.SiteScan;
 
 /**
  * Created by andrey on 11.09.17.

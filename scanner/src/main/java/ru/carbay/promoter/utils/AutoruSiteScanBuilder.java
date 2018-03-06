@@ -1,12 +1,13 @@
 package ru.carbay.promoter.utils;
 
-import ru.carbay.promoter.model.ds.SiteScan;
+import ru.carbay.promoter.model.SiteScan;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AutoruSiteScanBuilder {
 
+    public static final String AutoruSiteName = "auto.ru";
     private static final String autoruTemplateUrl =
             "https://auto.ru/%city%/cars/%brand%/%model%/new/?beaten=1&customs_state=1&geo_radius=100&image=true&in_stock=true&sort_offers=fresh_relevance_1-DESC&top_days=off&currency=RUR&output_type=list&official_dealer=true&page_num_offers=%page_number%";
 
@@ -19,7 +20,7 @@ public class AutoruSiteScanBuilder {
         pageUrls.add(url.replace("%page_number%", "1"));
 
         SiteScan siteScan = new SiteScan();
-        siteScan.setSite("Auto.ru");
+        siteScan.setSite(AutoruSiteName);
         siteScan.setCity(city);
         siteScan.setBrand(brand);
         siteScan.setModel(model);
